@@ -1,0 +1,133 @@
+// { Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+// UNASSIGNED is used for empty cells in sudoku grid 
+#define UNASSIGNED 0  
+
+// N is used for the size of Sudoku grid.  
+// Size will be NxN  
+#define N 9  
+
+bool SolveSudoku(int grid[N][N]);
+
+void printGrid(int grid[N][N]);
+
+int main() {
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int grid[N][N];
+		
+		for(int i=0;i<9;i++)
+		    for(int j=0;j<9;j++)
+		        cin>>grid[i][j];
+		
+		if (SolveSudoku(grid) == true)  
+            printGrid(grid);  
+        else
+            cout << "No solution exists";  
+        
+        cout<<endl;
+	}
+	
+	return 0;
+}// } Driver Code Ends
+
+
+
+
+
+bool isSafe(int grid[N][N],int row,int col,int element)
+
+{
+   int i,j;
+   for(i=0;i<N;i++)
+   {
+       if(grid[row][i]==element || grid[i][col]==element )
+       {
+           return false;
+       }
+   }
+   
+   int s=sqrt(N);
+   int startrow=row-(row%s);
+   int startcol=col-(col%s);
+   for(i=0;i<s;i++)
+   {
+       for(j=0;j<s;j++)
+       {
+           if(grid[i+startrow][j+startcol]==element)
+           {
+              return false; 
+           }
+       }
+   }
+   return true;
+   
+   
+    
+}
+bool SolveSudoku(int grid[N][N])  
+{ 
+    // Your code here
+    int i,j;
+    int f=0;
+    for(i=0;i<N;i++)
+    {
+        for(j=0;j<N;j++)
+        {
+            if(grid[i][j]==0)
+            {
+                f=1;
+                break;
+            }
+        }
+        if(f==1)
+        {
+            break;
+        }
+    }
+    
+    if(i==N && j==N)
+    {
+        return true;
+    }
+    
+    
+    int k;
+    for(k=1;k<=N;k++)
+    {
+        if(isSafe(grid,i,j,k))
+        {
+            grid[i][j]=k;
+            if(SolveSudoku(grid)==true)
+            {
+                return true;
+            }
+            grid[i][j]=0;
+            
+        }
+    }
+    return false;
+    
+    
+    
+    
+    
+    
+}
+
+void printGrid (int grid[N][N]) 
+{
+    // Your code here
+    int i,j;
+    for(i=0;i<N;i++)
+    {
+        for(j=0;j<N;j++)
+        {
+            cout<<grid[i][j]<<" ";
+        }
+    }
+}
