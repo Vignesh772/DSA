@@ -1,0 +1,63 @@
+
+
+
+
+Soultion:
+#include<iostream>
+using namespace std;
+
+vector<string> curr;
+vector<vector<string>> ans;
+bool ispalindrome(string s,int low,int high)
+{
+    while(low<=high)
+    {
+        if(s[low]!=s[high])
+        {
+            return false;
+            
+        }
+        low++;
+        high--;
+        
+    }
+    return true;
+}
+void palindrome(int start,string s)
+{
+    
+    if(start>=s.length())
+    {
+        ans.push_back(curr);
+    }
+    int i;
+    
+    for(i=start;i<s.length();i++)
+    {
+        if(ispalindrome(s,start,i))
+        {
+            curr.push_back(s.substr(start,i-start+1));
+            palindrome(i+1,s);
+            curr.pop_back();
+        }
+        
+    }
+    
+}
+
+
+int main() {
+    string s;
+    cin>>s;
+    palindrome(0,s);
+    
+    int i,j;
+    for(i=0;i<ans.size();i++)
+    {
+        for(j=0;j<ans[i].size();j++)
+        {
+            cout<<ans[i][j]<<" ";
+        }
+        cout<<"\n";
+    }
+}
