@@ -1,0 +1,122 @@
+Given an array of integers and a sum B, find all unique combinations in the array where the sum is equal to B. The same number may be chosen from the array any number of times to make B.
+
+Note:
+        1. All numbers will be positive integers.
+        2. Elements in a combination (a1, a2, …, ak) must be in non-descending order. (ie, a1 ≤ a2 ≤ … ≤ ak).
+        3. The combinations themselves must be sorted in ascending order.
+
+Example 1:
+
+Input:
+N = 4
+arr[] = {7,2,6,5}
+B = 16
+Output:
+(2 2 2 2 2 2 2 2)
+(2 2 2 2 2 6)
+(2 2 2 5 5)
+(2 2 5 7)
+(2 2 6 6)
+(2 7 7)
+(5 5 6)
+
+
+
+Soultion:
+
+// { Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+
+ // } Driver Code Ends
+
+
+
+
+vector<vector<int>> ans;
+bool comb(vector<int> A, vector<int> temp,int curr_sum,int B,int start)
+{
+    
+    if(curr_sum>B)
+    {
+        return false;
+    }
+    if(curr_sum==B)
+    {
+        ans.push_back(temp);
+        return true;
+    }
+    
+    int i;
+    bool res=false;
+    for(i=start;i<A.size();i++)
+    {
+        if(curr_sum+A[i] <= B)
+        {
+            temp.push_back(A[i]);
+            res=comb(A,temp,curr_sum+A[i],B,i) || res;
+        
+            
+        }
+        temp.pop_back();
+    }
+        
+        
+      return res;      
+        
+}
+    
+
+vector<vector<int> > combinationSum(vector<int> &A, int B) {
+    // Your code here
+    ans.clear();
+    set<int> s;
+    s.insert(A.begin(),A.end());
+    
+    
+    vector<int> nums;
+    for(auto it=s.begin();it!=s.end();it++)
+    {
+        nums.push_back(*it);
+    }
+    vector<int> temp;
+    int curr_sum=0;
+    bool a=comb(nums,temp,curr_sum,B,0);
+    
+    return ans;
+    
+}
+
+// { Driver Code Starts.
+int main(){
+    int t;
+    cin>>t;
+    while(t--){
+        int n;
+        cin>>n;
+        vector<int> A;
+        for(int i=0;i<n;i++){
+            int x;
+            cin>>x;
+            A.push_back(x);
+        }   
+        int sum;
+        cin>>sum;
+        vector<vector<int> > result;
+   		result=combinationSum(A, sum);
+   		if(result.size()==0){
+   			cout<<"Empty";
+   		}
+        for(int i=0;i<result.size();i++){
+            cout<<'(';
+            for(int j=0;j<result[i].size();j++){
+                cout<<result[i][j];
+                if(j<result[i].size()-1)
+                    cout<<" ";
+            }
+            cout<<")";
+        }
+        cout<<"\n";
+    }
+}	  // } Driver Code Ends
