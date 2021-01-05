@@ -1,0 +1,88 @@
+Given a number K and string str of digits denoting a positive integer, build the largest number possible by performing swap operations on the digits of str at most K times.
+
+Example 1:
+
+Input: K = 4, str = 1234567
+Output:7654321
+Explanation: Three swaps can make the
+input 1234567 to 7654321, swapping 1
+with 7, 2 with 6 and finally 3 with 5
+
+Solution:
+// { Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+string findMaximumNum(string str, int k);
+
+int main()
+{
+    int t, k;
+    string str;
+
+    cin >> t;
+    while (t--)
+    {
+        cin >> k >> str;
+        cout<< findMaximumNum(str, k) << endl;
+    }
+    return 0;
+}
+// } Driver Code Ends
+
+
+
+
+
+void maxx(string str,int k,string &max,int curr)
+{
+    if(k==0)
+    {
+        return;
+    }
+    
+    char max_char=str[curr];
+    
+    int i;
+    
+    
+    for(i=curr;i<str.length();i++)
+    {
+        if(str[i]>max_char)
+        {
+            max_char=str[i];
+        }
+        
+    }
+    if(str[curr]!=max_char)
+    {
+        k--;
+    }
+    
+    
+    for(i=curr;i<str.length();i++)
+    {
+        if(str[i]==max_char)
+        {
+            swap(str[i],str[curr]);
+            if(str.compare(max)>0)
+            {
+                max=str;
+            }
+            maxx(str,k,max,curr+1);
+            swap(str[i],str[curr]);
+            
+        }
+        
+    }
+    
+    
+}
+string findMaximumNum(string str, int k)
+{
+   // code here.
+   string max=str;
+   maxx(str,k,max,0);
+   return max;
+   
+}
