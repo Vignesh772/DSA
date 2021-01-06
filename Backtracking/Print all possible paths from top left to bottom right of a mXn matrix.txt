@@ -1,0 +1,116 @@
+Print all possible paths from top left to bottom right of a mXn matrix
+Difficulty Level : Medium
+ Last Updated : 30 Dec, 2020
+The problem is to print all the possible paths from top left to bottom right of a mXn matrix with the constraints that from each cell you can either move only to right or down.
+
+Examples : 
+
+Input : 1 2 3
+        4 5 6
+Output : 1 4 5 6
+         1 2 5 6
+         1 2 3 6
+
+Input : 1 2 
+        3 4
+Output : 1 2 4
+         1 3 4
+
+
+
+solution:
+#include<iostream>
+using namespace std;
+int maxx=INT_MIN;
+#define R 2 
+#define C 3
+int visited[R][C];
+int row_moves[2]={1,0};
+int col_moves[2]={0,1};
+vectorvectorint ans;
+bool isValid(int row,int col)
+{
+    if(row=0 && rowR && col=0 && colC)
+    {
+        return true;
+    }
+    return false;
+}
+bool isSafe(int mat[R][C],int row,int col, int visited[R][C])
+    
+{
+    
+    if(visited[row][col]==1)
+    {
+        return false;
+    }
+    return true;
+}
+void findLongestPath(int mat[R][C],int i,int j,int ei,int ej,int dis,int visited[R][C],vectorint temp)
+{
+    if(i==ei && j==ej)
+    {
+        
+            ans.push_back(temp);
+        
+            return;
+        
+    }
+    
+    int k;
+    
+            for(k=0;k2;k++)
+            {
+                if(isValid(i+row_moves[k],j+col_moves[k])) 
+                {
+                    visited[i+row_moves[k]][j+col_moves[k]]=1;
+                    temp.push_back(mat[i+row_moves[k]][j+col_moves[k]]);
+                   findLongestPath(mat,i+row_moves[k],j+col_moves[k], ei,ej,dis+1,visited,temp);
+                    visited[i+row_moves[k]][j+col_moves[k]]=0;
+                    temp.pop_back();
+                }
+                
+            }
+            
+        
+    
+    
+    
+    
+    
+}
+
+
+
+
+
+
+
+
+int main() 
+{ 
+     input matrix with hurdles shown with number 0 
+    int mat[R][C] = 
+    { 
+        { 1, 2, 3}, 
+        { 4, 5, 6} 
+    }; 
+  
+     find longest path with source (0, 0) and 
+     destination (1, 7) 
+    int i,j;
+    int visited[R][C]={0};
+    vectorint temp;
+    temp.push_back(mat[0][0]);
+    findLongestPath(mat, 0, 0, R-1, C-1,0,visited,temp); 
+    for(i=0;ians.size();i++)
+    {
+        for(j=0;jans[i].size();j++)
+        {
+            coutans[i][j] ;
+        }
+        coutn;
+    }
+  
+    return 0; 
+} 
