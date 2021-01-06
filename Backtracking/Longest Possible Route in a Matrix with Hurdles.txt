@@ -1,0 +1,87 @@
+Longest Possible Route in a Matrix with Hurdles
+Difficulty Level : Medium
+ Last Updated : 08 Feb, 2018
+Given an M x N matrix, with a few hurdles arbitrarily placed, calculate the length of longest possible route possible from source to destination within the matrix. We are allowed to move to only adjacent cells which are not hurdles. The route cannot contains any diagonal moves and a location once visited in a particular path cannot be visited again.
+
+For example, longest path with no hurdles from source to destination is highlighted for below matrix. The length of the path is 24.
+
+
+Solution:
+#include<iostream>
+using namespace std;
+int maxx=INT_MIN;
+#define R 3 
+#define C 10
+int visited[R][C];
+int row_moves[4]={1,0,-1,0};
+int col_moves[4]={0,1,0,-1};
+
+bool isValid(int row,int col)
+{
+    if(row>=0 && row<R && col>=0 && col<C)
+    {
+        return true;
+    }
+    return false;
+}
+bool isSafe(int mat[R][C],int row,int col, int visited[R][C])
+    
+{
+    
+    if(mat[row][col]==0 || visited[row][col]==1)
+    {
+        return false;
+    }
+    return true;
+}
+void findLongestPath(int mat[R][C],int i,int j,int ei,int ej,int dis,int visited[R][C])
+{
+    if(i==ei && j==ej)
+    {
+        if(dis>maxx)
+        {
+            maxx=dis;
+            return;
+        }
+    }
+    
+    int k;
+    
+            for(k=0;k<4;k++)
+            {
+                if(isValid(i+row_moves[k],j+col_moves[k]) &&  isSafe(mat,i+row_moves[k],j+col_moves[k],visited))
+                {
+                    visited[i+row_moves[k]][j+col_moves[k]]=1;
+                   findLongestPath(mat,i+row_moves[k],j+col_moves[k], ei,ej,dis+1,visited);
+                    visited[i+row_moves[k]][j+col_moves[k]]=0;
+                }
+                
+            }
+            
+        
+    
+    
+    
+    
+    
+}
+
+int main() 
+{ 
+    // input matrix with hurdles shown with number 0 
+    int mat[R][C] = 
+    { 
+        { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, 
+        { 1, 1, 0, 1, 1, 0, 1, 1, 0, 1 }, 
+        { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } 
+    }; 
+  
+    // find longest path with source (0, 0) and 
+    // destination (1, 7) 
+    int i,j;
+    int visited[R][C]={0};
+    findLongestPath(mat, 0, 0, 1, 7,0,visited); 
+    cout<<maxx;
+  
+    return 0; 
+} 
