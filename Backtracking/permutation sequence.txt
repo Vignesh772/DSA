@@ -1,0 +1,48 @@
+class Solution {
+public:
+    
+    void func(int n,int k,vector<int> &digits,vector<int> fact,string &ans)
+    {
+        
+        if(n==1)
+        {
+            ans+=to_string(digits[0]);
+            return;
+        }
+        
+        int index=k/fact[n-1];
+        if(k%fact[n-1]==0)
+        {
+            index-=1;
+        }
+        
+        ans+=to_string(digits[index]);
+        
+        k=k-(index*fact[n-1]);
+        digits.erase(digits.begin()+index);
+        func(n-1,k,digits,fact,ans);
+        
+        
+        
+    }
+    string getPermutation(int n, int k) {
+        
+        vector<int> fact;
+        vector<int> digits;
+        int i;
+        fact.push_back(1);
+        for(i=1;i<=n;i++)
+        {
+            fact.push_back(fact.back()*i);
+            
+            digits.push_back(i);
+        }
+        
+        string ans="";
+        func(n,k,digits,fact,ans);
+        return ans;
+        
+        
+        
+    }
+};
