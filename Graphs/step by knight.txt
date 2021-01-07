@@ -1,0 +1,105 @@
+Given a square chessboard, the initial position of Knight and position of a target. Find out the minimum steps a Knight will take to reach the target position.
+
+Note:
+The initial and the target position co-ordinates of Knight have been given accoring to 1-base indexing.
+
+
+Solution:
+// { Driver Code Starts
+// Initial function template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int minStepToReachTarget(int *, int *, int);
+
+// Driver code to test above methods
+int main() {
+    // size of square board
+    int t;
+    cin >> t;
+    while (t--) {
+        int N;
+        int a, b, c, d;
+        cin >> N;
+        cin >> a >> b;
+        cin >> c >> d;
+        int knightPos[] = {a, b};
+        int targetPos[] = {c, d};
+        cout << minStepToReachTarget(knightPos, targetPos, N) << endl;
+    }
+    return 0;
+}
+// } Driver Code Ends
+
+
+// User function template for C++
+
+// KnightPos : knight position coordinates
+// targetPos : target position coordinated
+// N : square matrix size
+
+
+int row_move[8]= {1, 2, 1, 2, -1, -2, -1, -2};
+int col_move[8]= {2, 1, -2, -1, 2, 1, -2, -1};
+int N_global;
+bool isSafe(int i,int j,int N)
+{
+    if(i>=1 && i<=N && j>=1 && j<=N)
+    {
+        return true;
+    }
+    return false;
+    
+}
+
+
+int ser(int N, int ex, int ey, queue<pair<int, int>> q) {
+int vis[N + 1][N + 1];
+memset(vis, -1, sizeof(vis));
+
+
+int edgeX[] = {1, 2, 1, 2, -1, -2, -1, -2};
+int edgeY[] = {2, 1, -2, -1, 2, 1, -2, -1};
+
+vis[q.front().first][q.front().second] = 0;
+
+
+while (!q.empty()) {
+
+int curX = q.front().first;
+int curY = q.front().second;
+
+for (int i = 0; i < 8; i++) {
+
+if (isSafe(edgeX[i] + curX , edgeY[i] + curY ,N) &&
+vis[curX + edgeX[i]][curY + edgeY[i]] == -1)
+{
+
+
+vis[edgeX[i] + curX][edgeY[i] + curY] = vis[curX][curY] + 1;
+q.push({curX + edgeX[i], curY + edgeY[i]});
+}
+if (edgeX[i] + curX == ex && edgeY[i] + curY == ey)
+return vis[edgeX[i] + curX][edgeY[i] + curY];
+}
+
+
+q.pop();
+}
+
+return 0;
+}
+int minStepToReachTarget(int knightPos[], int targetPos[], int N) {
+    // code here
+    int stx = knightPos[0];
+    int sty = knightPos[1];
+    int enx = targetPos[0];
+    int eny = targetPos[1];
+    
+    queue<pair<int, int>> q;
+    q.push(make_pair(stx, sty));
+    
+    return ser(N, enx, eny,q);
+    
+}
