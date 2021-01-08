@@ -1,82 +1,86 @@
 // { Driver Code Starts
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-
 
  // } Driver Code Ends
 
 
-/*  Function to check if the given graph contains cycle
-*   V: number of vertices
-*   adj[]: representation of graph
+/* This function is used to detect a cycle in undirected graph
+
+*  g[]: array of vectors to represent graph
+*  V: number of vertices
 */
 
 
-bool DFS(int v,vector<int> adj[],vector<bool> &visited,vector<bool> & recc)
+bool dfs(vector<int> g[],vector<bool> &visited,int u,int p)
 {
-    visited[v]=true;
-    recc[v]=true;
+    visited[u]=true;
     
-    for(auto i:adj[v])
+    
+    for(auto i:g[u])
     {
-        if(visited[i]==0)
+        if(!visited[i])
         {
-            if(DFS(i,adj,visited,recc))
+            if(dfs(g,visited,i,u))
             {
                 return true;
             }
         }
-        else if(recc[i]==true)
+        else if(i!=p || i==u )
         {
             return true;
         }
         
-        
     }
-    recc[v]=false;
     return false;
     
 }
-bool isCyclic(int V, vector<int> adj[])
+bool isCyclic(vector<int> g[], int V)
 {
-    // Your code here
-    vector<bool> visited(V);
-    vector<bool> recc(V);
-    
-    for(int i=0;i<V;i++)
-    {
-        if(!visited[i] && DFS(i,adj,visited,recc))
-        {
-            return true;
-            
-        }
-    }
-    return false;
+   // Your code here
+   vector<bool> visited(V);
+   int i;
+   for(i=0;i<V;i++)
+   {
+       if(!visited[i] && dfs(g,visited,i,-1))
+       {
+          
+               return true;
+           
+       }
+   }
+   return false;
+   
+   
 }
 
 // { Driver Code Starts.
 
-int main() {
-	
-	int t;
-	cin >> t;
-	
-	while(t--){
-	    
-	    int v, e;
-	    cin >> v >> e;
-	    
-	    vector<int> adj[v];
-	    
-	    for(int i =0;i<e;i++){
-	        int u, v;
-	        cin >> u >> v;
-	        adj[u].push_back(v);
-	    }
-	    
-	    cout << isCyclic(v, adj) << endl;
-	    
-	}
-	
-	return 0;
-}  // } Driver Code Ends
+
+int main()
+{
+    int T;
+    cin>>T;
+    while(T--)
+    {
+        int V, E;
+        cin>>V>>E;
+        
+        // array of vectors to represent graph
+        vector<int> adj[V];
+        
+        int u, v;
+        for(int i=0;i<E;i++)
+        {
+            cin>>u>>v;
+            
+            // adding edge to the graph
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+
+        cout << isCyclic(adj, V)<<endl;
+
+    }
+}
+  // } Driver Code Ends
