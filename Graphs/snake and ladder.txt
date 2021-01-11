@@ -1,0 +1,96 @@
+
+
+https://leetcode.com/problems/snakes-and-ladders/
+
+Solution:
+class Solution {
+public:
+    int ans=0;
+    int func(vector<int> &board,int n)
+    {
+        
+        queue<int> q;
+        int ans=0;
+        vector<int> visited(n,0);
+        
+        q.push(0);
+        visited[0]=1;
+        
+        while(!q.empty())
+        {
+            
+            
+            int size=q.size();
+            
+            while(size--)
+            {
+                int curr=q.front();
+                q.pop();
+                cout<<curr<<"-"<<ans<<" ";
+                if(curr==n-1)
+                {
+                    return ans;
+                }
+                for(int i=1;i<=6;i++)
+                {
+                    int newSquare = curr+i;
+                    if(newSquare < n) 
+                    {
+                        int val;
+                        if(board[newSquare] != -1)
+                        {
+                            val = board[newSquare]-1;
+                        } else 
+                        {
+                            val = newSquare;
+                        }
+                        if(!visited[val])
+                        {
+                             visited[val] = true;
+                             q.push(val);
+                        }
+                    }
+                }
+                
+            }
+           cout<<"\n";
+            ans++;
+            
+        }
+        return -1;
+        
+    }
+    
+    int snakesAndLadders(vector<vector<int>>& board) {
+        
+        
+        vector<int> new_board;
+        int i,j;
+        
+        int k=1;
+        for(i=board.size()-1;i>=0;i--)
+        {
+            if(k==1)
+            {
+                for(j=0;j<board[0].size();j++)
+                {
+                    new_board.push_back(board[i][j]);
+                }
+                
+            }
+            else
+            {
+                for(j=board[0].size()-1;j>=0;j--)
+                {
+                    new_board.push_back(board[i][j]);
+                }
+                
+            }
+            k=k*(-1);
+            
+        }
+        
+        int a=func(new_board,new_board.size());
+        return a;
+    }
+};
