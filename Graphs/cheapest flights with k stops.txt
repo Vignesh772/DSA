@@ -1,0 +1,78 @@
+
+There are n cities connected by m flights. Each flight starts from city u and arrives at v with a price w.
+
+Now given all the cities and flights, together with starting city src and the destination dst, your task is to find the cheapest price from src to dst with up to k stops. If there is no such route, output -1.
+
+Example 1:
+Input: 
+n = 3, edges = [[0,1,100],[1,2,100],[0,2,500]]
+src = 0, dst = 2, k = 1
+Output: 200
+
+
+
+Solution:
+class Solution {
+public:
+    
+    
+    int helper(int src,int dst,vector<vector<pair<int,int>>>& g,vector<vector<int>> &dp,int k)
+    {
+        if(k==-1 && src!=dst)
+        {
+            return -1;
+        }
+        if(src==dst)
+        {
+            return 0;
+        }
+        if(dp[src][k])
+        {
+            return dp[src][k];
+        }
+        
+        int currCost=INT_MAX;
+        for(auto it:g[src])
+        {
+            int cost=helper(it.first,dst,g,dp,k-1);
+            
+            if(cost!=-1)
+            {
+                currCost=min(currCost,cost+it.second);
+                
+            }
+            
+        }
+        if(currCost==INT_MAX)
+        {
+            dp[src][k]=-1;
+            return -1;
+        }
+        else
+        {
+            dp[src][k]=currCost;
+        }
+        return dp[src][k];
+        
+        
+        
+    }
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int K) {
+        
+        vector<vector<pair<int,int>>> g;
+        g.resize(n);
+        
+        vector<vector<int>> dp(n,vector<int> (K+1));
+        
+        
+        
+        for(auto it :flights)
+        {
+            int from=it[0];
+            int to=it[1];
+            int cost=it[2];
+            g[from].push_back({to,cost});
+        }
+        return(helper(src,dst,g,dp,K));
+    }
+};
