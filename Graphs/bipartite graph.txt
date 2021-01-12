@@ -1,0 +1,97 @@
+// { Driver Code Starts
+// C++ program to find out whether a given graph is Bipartite or not.
+// It works for disconnected graph also.
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAX = 100;
+bool isBipartite(int G[][MAX],int V);
+int main()
+{
+    int t;
+	cin>>t;
+	int g[MAX][MAX];
+	while(t--)
+	{
+		memset(g,0,sizeof (g));
+		int n;
+		cin>>n;
+	
+		for(int i=0;i<n;i++)
+		{
+			for(int j=0;j<n;j++)
+			{
+				cin>>g[i][j];
+			}
+		}
+		
+		cout<<isBipartite(g,n)<<endl;
+	}
+	return 0;
+}
+// } Driver Code Ends
+
+
+/*The function takes an adjacency matrix representation of the graph (g)
+and an integer(v) denoting the no of vertices as its arguments.
+You are required to complete below method */
+
+bool bfs(int i,int G[][MAX],int color[],int V)
+{
+    queue<int> q;
+    q.push(i);
+    
+    color[i]=1;
+    
+    while(!q.empty())
+    {
+        int curr=q.front();
+        q.pop();
+        
+        if(G[curr][curr])
+        {
+            return false;
+        }
+        
+        for(int j=0;j<V;j++)
+        {
+            if(G[curr][j] && color[j]==-1)
+            {
+                color[j]=1-color[curr];
+                q.push(j);
+            }
+            else if(G[curr][j] && color[curr]==color[j])
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+    
+    
+}
+bool isBipartite(int G[][MAX],int V)
+{
+     //Your code here
+     
+     int color[V];
+     memset(color,-1,sizeof(color));
+     
+     int i;
+     for(i=0;i<V;i++)
+     {
+         if(color[i]==-1)
+         {
+             if(bfs(i,G,color,V)==false)
+             {
+                 return false;
+             }
+         }
+         
+     }
+     return true;
+     
+     
+     
+     
+}
