@@ -1,0 +1,28 @@
+int func(Node *root)
+{
+    if(root==NULL)
+    {
+        return 0;
+    }
+    int temp=root->data;
+    if(!root->left  && !root->right)
+    {
+        
+        root->data=0;
+        return temp;
+    }
+    int a=func(root->left);
+    int b=func(root->right);
+    
+    temp=a+b+root->data;
+    root->data=a+b;
+
+    return temp;
+}
+void toSumTree(Node *node)
+{
+    // Your code here
+    int sum=func(node);
+}
+
+
