@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        vector<vector<int>> ans;
+        vector<int> temp;
+        sort(intervals.begin(),intervals.end());
+        
+        int i;
+        ans.push_back({intervals[0][0],intervals[0][1]});
+        for(i=1;i<intervals.size();i++)
+        {
+            if(intervals[i][0]<=ans[ans.size()-1][1])
+            {
+                int s=min(intervals[i][0],ans[ans.size()-1][0]);
+                int e=max(intervals[i][1],ans[ans.size()-1][1]);
+                ans.pop_back();
+                ans.push_back({s,e});
+            }
+            else
+            {
+                ans.push_back({intervals[i][0],intervals[i][1]});
+                
+            }
+          
+            
+            
+        }
+        
+        return ans;        
+        
+    }
+};
